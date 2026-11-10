@@ -1,0 +1,87 @@
+:root {
+  /* Brand */
+  --navy: #0A2E6D;
+  --navy-deep: #061c46;
+  --green: #1EBE61;
+  --green-deep: #148f49;
+  --white: #ffffff;
+  --gray-light: #EEF1F6;
+  --gray: #9AA6B8;
+  --gray-dark: #4B5568;
+  --ink: #0B1220;
+
+  /* Semantic */
+  --bg: #0A0F1E;
+  --bg-panel: #0E1730;
+  --bg-panel-raised: #121D3B;
+  --border: rgba(255,255,255,0.09);
+  --border-strong: rgba(255,255,255,0.18);
+  --text-primary: #F3F5FA;
+  --text-secondary: #A7B0C4;
+  --text-faint: #5C6680;
+  --accent: var(--green);
+  --accent-warn: #E0A93A;
+  --accent-danger: #D14C4C;
+
+  /* Type */
+  --font-display: "DIPTO Grotesk", "Segoe UI Semibold", "Arial Narrow", Arial, sans-serif;
+  --font-body: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "Consolas", "SFMono-Regular", "Courier New", monospace;
+
+  /* Scale */
+  --step-0: 0.8rem;
+  --step-1: 0.95rem;
+  --step-2: 1.15rem;
+  --step-3: 1.5rem;
+  --step-4: 2rem;
+  --step-5: 2.8rem;
+
+  /* Layout */
+  --panel-left-w: 19%;
+  --panel-right-w: 21%;
+  --kpi-h: 56px;
+  --topbar-h: 0px;
+  --radius-sm: 3px;
+  --radius-md: 6px;
+
+  /* Motion */
+  --ease: cubic-bezier(.4,0,.2,1);
+  --dur-fast: 220ms;
+  --dur-med: 420ms;
+  --dur-slow: 650ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+/* =====================================================================
+   LIGHT THEME
+   Overrides the neutral "chrome" (backgrounds, borders, text) only —
+   brand colors (navy/green) and the product visualization's own internal
+   scene stay consistent across themes, the way a rendered product shot
+   doesn't change color just because the surrounding webpage does.
+   ===================================================================== */
+:root[data-theme="light"] {
+  --bg: #F4F6FB;
+  --bg-panel: #FFFFFF;
+  --bg-panel-raised: #FFFFFF;
+  --border: rgba(10,20,40,0.10);
+  --border-strong: rgba(10,20,40,0.20);
+  --text-primary: #10182B;
+  --text-secondary: #4A5570;
+  --text-faint: #8890A3;
+  --ink: #10182B;
+}
+:root[data-theme="light"] .card,
+:root[data-theme="light"] .flow-node,
+:root[data-theme="light"] .data-row,
+:root[data-theme="light"] .kpi-item,
+:root[data-theme="light"] .btn-ghost,
+:root[data-theme="light"] .popover {
+  box-shadow: 0 1px 3px rgba(20,30,60,0.06);
+}
+:root[data-theme="light"] .bg-panel-raised-shadow,
+:root[data-theme="light"] .card {
+  box-shadow: 0 2px 8px rgba(20,30,60,0.06);
+}

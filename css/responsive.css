@@ -1,0 +1,430 @@
+/* =====================================================================
+   RESPONSIVE OVERRIDES
+
+   Loaded LAST (after layout.css and components.css) on purpose: several
+   rules here override base component rules (.card, .kpi-item, .risk-grid,
+   .btn-ghost, etc.) that live in components.css.
+
+   ===================================================================== */
+
+
+/* =====================================================================
+   SAFE FULL-PAGE VERTICAL SCROLL FIX
+
+   IMPORTANT:
+   This removes only the fixed viewport-height restriction.
+
+   It intentionally DOES NOT change:
+   - grid-template-columns
+   - desktop panel widths
+   - side panel overflow
+   - panel-center overflow
+   - card sizing
+   - KPI layout
+   - existing component layout
+
+   This prevents long sections from being cut off while preserving
+   the original desktop card view.
+
+   ===================================================================== */
+
+/* Allow the browser itself to scroll vertically */
+html,
+body {
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/*
+   Remove the hard 100vh height.
+
+   Do NOT change grid-template-rows here.
+   The original grid row structure from layout.css remains active.
+*/
+#app {
+  height: auto !important;
+  min-height: 100vh;
+}
+
+/*
+   Important for CSS Grid/Flex layouts.
+
+   This allows the center content to shrink inside its existing grid
+   column instead of expanding horizontally and destroying card layouts.
+*/
+.panel-center,
+.stage-body {
+  min-width: 0;
+}
+
+/*
+   Let a long stage grow naturally instead of being clipped.
+
+   We deliberately do not set width, display, grid, or padding here.
+*/
+.stage-body {
+  height: auto;
+  min-height: 0;
+  flex: 0 0 auto;
+  overflow: visible;
+}
+
+/* =====================================================================
+   RESPONSIVE REAL / GENERATED IMAGES
+   ===================================================================== */
+
+/* Image panel always stays inside its parent */
+.real-image-panel img {
+  width: 100%;
+  max-width: 100%;
+  height: auto !important;
+  object-fit: contain !important;
+}
+
+/* Technical/product images should never be cropped */
+.real-image-panel img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto !important;
+  max-height: 70vh;
+  object-fit: contain !important;
+  object-position: center;
+}
+
+/* On smaller screens, allow natural proportional scaling */
+@media (max-width: 780px) {
+  .real-image-panel img {
+    width: 100%;
+    height: auto !important;
+    max-height: none;
+    object-fit: contain !important;
+  }
+}
+
+/* =====================================================================
+   MOBILE / NARROW VIEWPORT LAYOUT (<=780px)
+
+   Side panels become full-height overlay drawers instead of grid columns,
+   so the product stage always gets the full screen by default. The KPI
+   strip becomes horizontally scrollable instead of squeezing five labels
+   into a few centimetres.
+
+   ===================================================================== */
+
+@media (max-width: 780px) {
+
+  html,
+  body {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  #app {
+    grid-template-columns: 0px 1fr 0px !important;
+    grid-template-rows: 1fr auto;
+    min-height: 100vh;
+  }
+
+  .panel-left,
+  .panel-right {
+    position: fixed;
+    top: 0;
+    bottom: var(--kpi-h);
+    width: min(84vw, 320px);
+    z-index: 60;
+    padding: 24px 20px !important;
+    box-shadow: 0 0 48px rgba(0, 0, 0, 0.55);
+    transition: transform var(--dur-med) var(--ease);
+  }
+
+  .panel-left {
+    left: 0;
+    transform: translateX(-100%);
+  }
+
+  .panel-right {
+    right: 0;
+    transform: translateX(100%);
+  }
+
+  /*
+     Reuse the same collapse-left/collapse-right classes:
+     on desktop their presence means "collapsed"; here their
+     ABSENCE means the drawer is open.
+  */
+  #app:not(.collapse-left) .panel-left {
+    transform: translateX(0);
+  }
+
+  #app:not(.collapse-right) .panel-right {
+    transform: translateX(0);
+  }
+
+  #app:not(.collapse-left) .panel-left > *,
+  #app:not(.collapse-right) .panel-right > * {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .mobile-scrim {
+    position: fixed;
+    inset: 0;
+    bottom: var(--kpi-h);
+    background: rgba(3, 6, 16, 0.55);
+    z-index: 55;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--dur-med) var(--ease);
+  }
+
+  #app:not(.collapse-left) ~ .mobile-scrim,
+  #app:not(.collapse-right) ~ .mobile-scrim {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .panel-toggle {
+    width: 32px;
+    height: 64px;
+    font-size: 0.9rem;
+    z-index: 65;
+  }
+
+  .stage-header {
+    padding: 16px 52px 0 52px;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .stage-title {
+    font-size: 1.5rem;
+  }
+
+  /*
+     Keep the original mobile padding.
+     Do not force a width that can create horizontal overflow.
+  */
+  .stage-body {
+    padding: 8px 52px 16px 52px;
+    width: auto;
+    min-width: 0;
+    height: auto;
+    overflow: visible;
+  }
+
+  .kpi-bar {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .kpi-item {
+    flex: 0 0 auto !important;
+    min-width: 118px;
+    padding: 0 14px;
+  }
+
+  .kpi-label {
+    font-size: 0.58rem;
+  }
+
+  .kpi-value {
+    font-size: 0.94rem;
+  }
+
+  .mode-row,
+  #variant-row {
+    flex-wrap: wrap;
+  }
+
+  .btn-ghost {
+    padding: 11px 16px;
+    font-size: 0.74rem;
+  }
+
+  .grid-row {
+    gap: 10px;
+  }
+
+  .card {
+    min-width: 150px;
+    flex: 1 1 150px;
+  }
+
+  .risk-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .popover {
+    width: min(80vw, 260px);
+  }
+
+  .invest-row {
+    flex-wrap: wrap;
+  }
+
+  .invest-btn {
+    flex: 1 1 45%;
+  }
+
+  .flow-row {
+    row-gap: 8px;
+  }
+
+  .detail-pane {
+    width: 88vw;
+  }
+
+  /*
+     Mobile image protection.
+     Images remain inside their existing containers.
+  */
+  .real-image-panel {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .real-image-panel img {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+
+/* =====================================================================
+   VERY SMALL MOBILE SCREENS (<=460px)
+
+   ===================================================================== */
+
+@media (max-width: 460px) {
+
+  .stage-title {
+    font-size: 1.25rem;
+  }
+
+  .stage-header {
+    padding-left: 46px;
+    padding-right: 46px;
+  }
+
+  .stage-body {
+    padding-left: 46px;
+    padding-right: 46px;
+  }
+
+  .risk-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .kpi-item {
+    min-width: 104px;
+  }
+
+  .card {
+    min-width: 130px;
+    flex-basis: 130px;
+  }
+
+  .invest-btn {
+    flex: 1 1 100%;
+  }
+
+  .data-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .panel-left,
+  .panel-right {
+    width: min(90vw, 320px);
+  }
+}
+
+/* =====================================================================
+   ANATOMY — TWO RESPONSIVE IMAGES
+   ===================================================================== */
+
+.anatomy-photo-section {
+  width: 100%;
+  min-width: 0;
+}
+
+.anatomy-photo-title {
+  margin-bottom: 8px;
+}
+
+.anatomy-images-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.anatomy-image-card {
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+
+  overflow: hidden;
+
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-panel);
+}
+
+.anatomy-image-card img {
+  display: block;
+
+  width: 100%;
+  max-width: 100%;
+  height: auto !important;
+
+  object-fit: contain !important;
+  object-position: center;
+}
+
+.anatomy-image-card figcaption {
+  padding: 8px 10px;
+
+  font-family: var(--font-mono, monospace);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+
+  color: var(--text-faint);
+  border-top: 1px solid var(--border);
+}
+
+.anatomy-image-error {
+  display: none;
+
+  padding: 30px 15px;
+
+  text-align: center;
+  font-size: 0.75rem;
+  color: #ff6b6b;
+}
+
+
+/* Mobile: one image per row */
+
+@media (max-width: 780px) {
+
+  .anatomy-images-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .anatomy-image-card img {
+    width: 100%;
+    height: auto !important;
+    max-width: 100%;
+  }
+}

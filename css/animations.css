@@ -1,0 +1,79 @@
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+.pulse { animation: pulseGlow 1.8s ease-in-out infinite; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@keyframes flowDash {
+  to { stroke-dashoffset: -40; }
+}
+.flow-anim { stroke-dasharray: 6 6; animation: flowDash 1.1s linear infinite; }
+
+@keyframes countUp {
+  from { opacity: 0.3; }
+  to { opacity: 1; }
+}
+
+.desk-part {
+  transition: transform var(--dur-slow) var(--ease), opacity var(--dur-slow) var(--ease);
+  transform-box: fill-box;
+  transform-origin: center;
+  cursor: pointer;
+}
+.desk-part:hover { filter: brightness(1.25); }
+.desk-part.dim { opacity: 0.35; }
+.desk-part:focus { outline: none; }
+.desk-part:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
+
+.stage-svg-wrap {
+  transition: opacity var(--dur-slow) var(--ease);
+  transform-box: fill-box;
+  animation: idleFloat 4.5s ease-in-out infinite;
+}
+/* Stagger the two units slightly so they don't bob in lockstep. */
+#desk-unit-b.stage-svg-wrap { animation-delay: -2.25s; }
+
+.scene-prop {
+  transition: opacity var(--dur-slow) var(--ease);
+  opacity: 0;
+}
+.scene-chair {
+  transition: opacity var(--dur-med) var(--ease);
+}
+
+@keyframes idleFloat {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -5px; }
+}
+
+/* ---------- ROTATE (SHOWCASE) CONTROL ---------- */
+.desk-rotate-wrap {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1200px;
+}
+.desk-rotate-wrap svg {
+  width: 100%;
+  max-height: 100%;
+  transform: scale(var(--desk-scale, 1));
+  transition: transform var(--dur-med) var(--ease);
+  transform-style: preserve-3d;
+}
+.desk-rotate-wrap.rotating svg {
+  animation: showcaseSpin 4s linear infinite;
+}
+@keyframes showcaseSpin {
+  from { transform: scale(var(--desk-scale, 1)) rotateY(0deg); }
+  to   { transform: scale(var(--desk-scale, 1)) rotateY(360deg); }
+}
+
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.rise-in { animation: riseIn var(--dur-med) var(--ease) both; }

@@ -1,0 +1,412 @@
+/* =====================================================================
+   ENGINEERING / BLUEPRINT VISUAL SYSTEM
+   Shared building blocks used to give the presentation a technical,
+   drafting-table feel: graph-paper grid, HUD viewfinder corners, a
+   scanning sweep line, dimension-line callouts, and a status ticker.
+   ===================================================================== */
+
+.blueprint-grid {
+  background-image:
+    linear-gradient(rgba(30,190,97,0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30,190,97,0.07) 1px, transparent 1px),
+    linear-gradient(rgba(30,190,97,0.16) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30,190,97,0.16) 1px, transparent 1px);
+  background-size: 24px 24px, 24px 24px, 120px 120px, 120px 120px;
+  background-position: -1px -1px;
+}
+
+/* ---------- HUD viewfinder corners ---------- */
+.hud-frame { position: relative; }
+.hud-corner {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid var(--green);
+  opacity: 0.5;
+  pointer-events: none;
+  animation: hudPulse 3.6s ease-in-out infinite;
+}
+.hud-corner.tl { top: 10px; left: 10px; border-right: none; border-bottom: none; }
+.hud-corner.tr { top: 10px; right: 10px; border-left: none; border-bottom: none; animation-delay: -0.9s; }
+.hud-corner.bl { bottom: 10px; left: 10px; border-right: none; border-top: none; animation-delay: -1.8s; }
+.hud-corner.br { bottom: 10px; right: 10px; border-left: none; border-top: none; animation-delay: -2.7s; }
+@keyframes hudPulse {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 0.9; }
+}
+
+/* ---------- Scanning sweep ---------- */
+.scanline-wrap { position: relative; overflow: hidden; }
+.scanline {
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--green) 20%, var(--green) 80%, transparent);
+  box-shadow: 0 0 8px 1px rgba(30,190,97,0.5);
+  opacity: 0;
+  pointer-events: none;
+  animation: scanSweep 4.5s cubic-bezier(.4,0,.2,1) infinite;
+}
+@keyframes scanSweep {
+  0%   { top: 6%;  opacity: 0; }
+  8%   { opacity: 0.65; }
+  46%  { opacity: 0.65; }
+  54%  { top: 94%; opacity: 0; }
+  100% { top: 94%; opacity: 0; }
+}
+
+/* ---------- Status ticker ---------- */
+.status-ticker {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  color: var(--green);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.status-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 6px 1px rgba(30,190,97,0.7);
+  flex: 0 0 auto;
+  animation: statusBlink 1.6s ease-in-out infinite;
+}
+@keyframes statusBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+.status-ticker-text {
+  transition: opacity 240ms var(--ease);
+}
+.status-ticker-text.swap { opacity: 0; }
+
+/* ---------- Dimension lines (technical drawing callouts) ---------- */
+.dim-line { stroke: #5c7ea3; stroke-width: 1; opacity: 0.75; }
+.dim-tick { stroke: #5c7ea3; stroke-width: 1; opacity: 0.75; }
+.dim-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  fill: #8fa8c9;
+  letter-spacing: 0.02em;
+}
+.dim-group {
+  transition: opacity var(--dur-med) var(--ease);
+}
+
+/* ---------- Auto-cycle indicator chip ---------- */
+.auto-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.06em;
+  color: var(--text-faint);
+  border: 1px solid var(--border-strong);
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  background: transparent;
+  transition: border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+.auto-chip:hover { border-color: var(--green); color: var(--green); }
+.auto-chip.on { color: var(--green); border-color: rgba(30,190,97,0.4); }
+.auto-chip .status-dot { animation-play-state: paused; opacity: 0.3; }
+.auto-chip.on .status-dot { animation-play-state: running; opacity: 1; }
+
+/* ---------- Opening screen: blueprint wireframe ---------- */
+.opening-blueprint-panel {
+  position: relative;
+  width: min(78vw, 300px);
+  margin: 0 auto 18px auto;
+  border: 1px solid rgba(30,190,97,0.3);
+  border-radius: var(--radius-md);
+  padding: 10px 14px 6px 14px;
+  background: rgba(30,190,97,0.03);
+  opacity: 0;
+  animation: fadeUp var(--dur-slow) var(--ease) forwards;
+  animation-delay: 60ms;
+}
+.opening-blueprint-panel svg { width: 100%; height: auto; display: block; }
+.opening-blueprint-caption {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+  text-align: left;
+  margin-top: 2px;
+}
+.bp-draw {
+  fill: none;
+  stroke: var(--green);
+  stroke-width: 1.4;
+  opacity: 0.8;
+}
+.bp-draw-fill {
+  fill: rgba(30,190,97,0.05);
+  stroke: var(--green);
+  stroke-width: 1.4;
+  opacity: 0.8;
+}
+
+/* =====================================================================
+   ICON CHIPS
+   Small icon-plus-text cards used to give text-only lists (materials,
+   production stages, workforce, supply chain) a visual anchor.
+   ===================================================================== */
+.icon-chip {
+  width: 36px; height: 36px;
+  flex: 0 0 auto;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(30,190,97,0.35);
+  background: rgba(30,190,97,0.07);
+  color: var(--green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease);
+}
+.card:hover .icon-chip, .data-row:hover .icon-chip { transform: scale(1.08); background: rgba(30,190,97,0.14); }
+.icon-chip.navy { border-color: rgba(10,46,109,0.5); background: rgba(28,70,148,0.18); color: #6f93d6; }
+.card-icon-row { display: flex; align-items: flex-start; gap: 12px; }
+.bom-card.on-model { border-color: rgba(30,190,97,0.3); }
+.bom-card.on-model:hover { border-color: var(--green); }
+
+/* ---------- MATERIAL SWATCHES ---------- */
+.material-card { width: 250px; padding: 0; overflow: hidden; }
+.material-swatch-svg { width: 100%; height: 84px; display: block; }
+.material-card-body { padding: 14px 16px 16px 16px; }
+.material-props { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 5px; }
+.material-props li { font-size: 0.74rem; color: var(--text-secondary); list-style: none; padding-left: 14px; position: relative; }
+.material-props li::before { content: ''; position: absolute; left: 0; top: 0.5em; width: 5px; height: 5px; border-radius: 50%; background: var(--green); }
+.material-used-in { margin-top: 9px; font-size: 0.68rem; color: var(--text-faint); font-family: var(--font-mono); }
+
+/* ---------- PRODUCTION STAGE ART + PROCESS DIAGRAM ---------- */
+.stage-art-panel {
+  width: 100%;
+  max-width: 320px;
+  flex: 0 0 auto;
+}
+.stage-art-svg { width: 100%; height: auto; display: block; }
+.process-diagram { display: flex; align-items: stretch; gap: 0; flex-wrap: wrap; }
+.process-step {
+  flex: 1 1 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  padding: 10px 8px;
+  position: relative;
+}
+.process-step .icon-chip { width: 40px; height: 40px; }
+.process-step-label { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.08em; color: var(--text-faint); }
+.process-step-value { font-size: 0.8rem; color: var(--text-primary); font-weight: 600; }
+.process-arrow-h { display: flex; align-items: center; color: var(--text-faint); font-size: 1.2rem; flex: 0 0 auto; padding-top: 20px; }
+.kbd-shortcut-hint {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-faint);
+}
+
+/* =====================================================================
+   RADIAL GAUGE (e.g. First Pass Yield)
+   ===================================================================== */
+.gauge-wrap { position: relative; width: 132px; height: 132px; flex: 0 0 auto; }
+.gauge-wrap svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.gauge-track { fill: none; stroke: var(--border-strong); stroke-width: 9; }
+.gauge-fill {
+  fill: none;
+  stroke: var(--green);
+  stroke-width: 9;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1100ms cubic-bezier(.4,0,.2,1);
+  filter: drop-shadow(0 0 5px rgba(30,190,97,0.55));
+}
+.gauge-value {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-weight: 800; font-size: 1.6rem; color: var(--text-primary);
+}
+
+/* =====================================================================
+   DONUT CHART (e.g. cost breakdown)
+   ===================================================================== */
+.donut-wrap { position: relative; width: 160px; height: 160px; flex: 0 0 auto; }
+.donut-ring {
+  width: 100%; height: 100%; border-radius: 50%;
+  background: conic-gradient(var(--donut-stops, var(--green) 0 100%));
+  transform: scale(0.6) rotate(-90deg);
+  opacity: 0;
+  transition: transform 900ms cubic-bezier(.34,1.56,.64,1), opacity 500ms var(--ease);
+}
+.donut-ring.in { transform: scale(1) rotate(-90deg); opacity: 1; }
+.donut-hole {
+  position: absolute; inset: 18%;
+  border-radius: 50%;
+  background: var(--bg-panel-raised);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  border: 1px solid var(--border);
+}
+.donut-hole .v { font-family: var(--font-display); font-weight: 800; font-size: 1.15rem; color: var(--text-primary); }
+.donut-hole .l { font-family: var(--font-mono); font-size: 0.6rem; color: var(--text-faint); letter-spacing: 0.05em; }
+.donut-legend { display: flex; flex-direction: column; gap: 7px; min-width: 0; flex: 1 1 160px; }
+.donut-legend-row { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; width: 100%; }
+.donut-legend-row .mono { margin-left: auto; padding-left: 10px; flex: 0 0 auto; white-space: nowrap; }
+.donut-swatch { width: 10px; height: 10px; border-radius: 2px; flex: 0 0 auto; }
+
+/* =====================================================================
+   RISK QUADRANT (probability x impact scatter)
+   ===================================================================== */
+.risk-quadrant-svg { width: 100%; height: auto; }
+.rq-axis { stroke: var(--border-strong); stroke-width: 1; }
+.rq-gridline { stroke: var(--border); stroke-width: 1; stroke-dasharray: 3 4; }
+.rq-axis-label { font-family: var(--font-mono); font-size: 10px; fill: var(--text-faint); letter-spacing: 0.05em; margin-right: 10px;}
+.rq-zone-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.08em; fill: var(--text-faint); opacity: 0.7; }
+.rq-bubble {
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.rq-bubble:hover, .rq-bubble.sel { transform: scale(1.18); }
+.rq-bubble-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  fill: var(--ink);
+  pointer-events: none;
+}
+
+/* =====================================================================
+   PRODUCT VIEW TOGGLE + PHOTO MODE
+   ===================================================================== */
+.view-toggle {
+  display: inline-flex;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.view-toggle button {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  padding: 9px 14px;
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+.view-toggle button + button { border-left: 1px solid var(--border-strong); }
+.view-toggle button.active { background: rgba(30,190,97,0.14); color: var(--green); }
+.view-toggle button:hover:not(.active) { background: rgba(255,255,255,0.05); }
+
+.photo-stage {
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 38%, rgba(255,255,255,0.10), transparent 70%),
+    radial-gradient(ellipse 90% 70% at 50% 100%, rgba(10,46,109,0.55), transparent 70%),
+    linear-gradient(180deg, #0c1530 0%, #060a18 100%);
+}
+.photo-vignette {
+  position: absolute; inset: 0;
+  box-shadow: inset 0 0 90px 20px rgba(0,0,0,0.55);
+  pointer-events: none;
+}
+.photo-caption {
+  position: absolute;
+  left: 14px; bottom: 12px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.55);
+}
+.desk-reflection { opacity: 0.16; }
+
+/* ---------- PHOTO VIEW GALLERY STRIP ---------- */
+.gallery-strip { display: flex; gap: 8px; flex-wrap: wrap; }
+.gallery-thumb {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  padding: 8px 14px;
+  background: var(--bg-panel-raised);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+.gallery-thumb:hover { border-color: var(--green); }
+.gallery-thumb.active { border-color: var(--green); color: var(--green); background: rgba(30,190,97,0.08); }
+
+/* ---------- REAL-IMAGE DROP-IN PANEL ---------- */
+.real-image-panel {
+  position: relative;
+  width: 100%;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--bg-panel-raised);
+  border: 1px solid var(--border);
+}
+.ri-aspect-wide { aspect-ratio: 16 / 9; }
+.ri-aspect-square { aspect-ratio: 1 / 1; }
+.ri-aspect-tall { aspect-ratio: 4 / 5; }
+.ri-aspect-fill { height: 100%; }
+.real-image-panel img { display: none; width: 100%; height: 100%; object-fit: cover; }
+.real-image-panel.loaded img { display: block; }
+.real-image-panel.loaded .real-image-fallback,
+.real-image-panel.loaded .real-image-hint { display: none; }
+.real-image-fallback {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  padding: 10px;
+}
+.real-image-fallback > * { max-width: 100%; max-height: 100%; }
+.real-image-hint {
+  position: absolute; left: 8px; bottom: 8px;
+  display: flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--text-faint);
+  background: rgba(6,10,20,0.72);
+  border: 1px dashed var(--border-strong);
+  padding: 5px 9px;
+  border-radius: var(--radius-sm);
+  backdrop-filter: blur(2px);
+}
+:root[data-theme="light"] .real-image-hint { background: rgba(255,255,255,0.82); }
+.ri-hint-icon { color: var(--green); display: inline-flex; flex: 0 0 auto; }
+.real-image-caption {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  padding: 8px 12px;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: rgba(255,255,255,0.85);
+  background: linear-gradient(0deg, rgba(0,0,0,0.55), transparent);
+}
+.real-image-panel:not(.loaded) .real-image-caption { display: none; }
+
+/* ---------- THEME TOGGLE ---------- */
+.theme-toggle-btn {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  z-index: 90;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-panel-raised);
+  color: var(--green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-med) var(--ease), border-color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+}
+#app.active ~ .theme-toggle-btn { opacity: 1; pointer-events: auto; }
+.theme-toggle-btn:hover { border-color: var(--green); transform: scale(1.06); }
+.theme-toggle-btn:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }

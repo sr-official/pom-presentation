@@ -1,0 +1,271 @@
+APPDATA.production = {
+  "assumptionLabel": "Illustrative Academic Assumption - process times are estimates for planning discussion only",
+  "stages": [
+    {
+      "id": 1,
+      "name": "Raw Material Receiving",
+      "input": "Boards, steel, hardware",
+      "process": "Receive & log incoming stock",
+      "output": "Verified raw material lot",
+      "worker": "Store Assistant",
+      "equipment": "Pallet trolley, scale",
+      "quality": "IQC — quantity & condition check",
+      "minutes": 8
+    },
+    {
+      "id": 2,
+      "name": "Incoming Inspection",
+      "input": "Raw material lot",
+      "process": "Visual & dimensional check",
+      "output": "Accepted / rejected lot",
+      "worker": "QC Technician",
+      "equipment": "Calipers, moisture meter",
+      "quality": "IQC — material spec check",
+      "minutes": 6
+    },
+    {
+      "id": 3,
+      "name": "Panel Cutting",
+      "input": "Particle board sheet",
+      "process": "Cut to tabletop dimensions",
+      "output": "Cut panel blanks",
+      "worker": "Panel Operator",
+      "equipment": "Panel saw",
+      "quality": "IPQC — dimension check",
+      "minutes": 5
+    },
+    {
+      "id": 4,
+      "name": "CNC / Drilling",
+      "input": "Cut panel blank",
+      "process": "Drill mounting & hinge holes",
+      "output": "Drilled panel",
+      "worker": "Panel Operator",
+      "equipment": "CNC / drill press",
+      "quality": "IPQC — hole alignment",
+      "minutes": 4
+    },
+    {
+      "id": 5,
+      "name": "Edge Banding",
+      "input": "Drilled panel",
+      "process": "Apply PVC/ABS edge band",
+      "output": "Finished tabletop blank",
+      "worker": "Panel Operator",
+      "equipment": "Edge banding machine",
+      "quality": "IPQC — edge finish check",
+      "minutes": 4
+    },
+    {
+      "id": 6,
+      "name": "Metal Frame Fabrication",
+      "input": "Steel tube stock",
+      "process": "Cut, bend & weld frame",
+      "output": "Support frame assembly",
+      "worker": "Fabrication Worker",
+      "equipment": "Welding set, bender",
+      "quality": "IPQC — alignment check",
+      "minutes": 10
+    },
+    {
+      "id": 7,
+      "name": "Surface Finishing",
+      "input": "Tabletop + frame",
+      "process": "Sand, clean, coat metal frame",
+      "output": "Finished surfaces",
+      "worker": "Finishing Worker",
+      "equipment": "Sander, spray booth",
+      "quality": "IPQC — surface quality",
+      "minutes": 6
+    },
+    {
+      "id": 8,
+      "name": "Sub-Assembly",
+      "input": "Finished components",
+      "process": "Assemble mechanism, connector, tray",
+      "output": "Sub-assembled modules",
+      "worker": "Assembly Worker",
+      "equipment": "Hand & power tools",
+      "quality": "IPQC — mechanism cycle test",
+      "minutes": 8
+    },
+    {
+      "id": 9,
+      "name": "Final Assembly",
+      "input": "Sub-assemblies",
+      "process": "Join top, frame, mechanism, feet",
+      "output": "Complete FlexDesk unit",
+      "worker": "Assembly Worker",
+      "equipment": "Hand & power tools",
+      "quality": "IPQC — fit & stability",
+      "minutes": 12
+    },
+    {
+      "id": 10,
+      "name": "Functional Inspection",
+      "input": "Assembled unit",
+      "process": "Test folding, locking, connecting",
+      "output": "Function-verified unit",
+      "worker": "QC Technician",
+      "equipment": "Test jig",
+      "quality": "FQC — functional test",
+      "minutes": 5
+    },
+    {
+      "id": 11,
+      "name": "Final Quality Control",
+      "input": "Function-verified unit",
+      "process": "Full inspection against checklist",
+      "output": "Approved unit",
+      "worker": "QC Technician",
+      "equipment": "Inspection checklist",
+      "quality": "FQC — full checklist",
+      "minutes": 4
+    },
+    {
+      "id": 12,
+      "name": "Packaging",
+      "input": "Approved unit",
+      "process": "Pack with protective material",
+      "output": "Packed unit",
+      "worker": "Packaging Worker",
+      "equipment": "Packing table, strapping",
+      "quality": "FQC — packaging integrity",
+      "minutes": 6
+    }
+  ],
+  "factoryZones": [
+    {
+      "id": "store",
+      "name": "Raw Material Store",
+      "x": 20,
+      "y": 55,
+      "w": 110,
+      "h": 70,
+      "workers": 1,
+      "equipment": "Racking, pallet trolley",
+      "output": "Verified stock",
+      "quality": "IQC"
+    },
+    {
+      "id": "cutting",
+      "name": "Panel Cutting",
+      "x": 150,
+      "y": 20,
+      "w": 110,
+      "h": 60,
+      "workers": 1,
+      "equipment": "Panel saw",
+      "output": "Cut blanks",
+      "quality": "IPQC"
+    },
+    {
+      "id": "cnc",
+      "name": "Drilling / CNC",
+      "x": 280,
+      "y": 20,
+      "w": 110,
+      "h": 60,
+      "workers": 1,
+      "equipment": "CNC / drill press",
+      "output": "Drilled panels",
+      "quality": "IPQC"
+    },
+    {
+      "id": "metal",
+      "name": "Metal Fabrication",
+      "x": 410,
+      "y": 20,
+      "w": 120,
+      "h": 60,
+      "workers": 2,
+      "equipment": "Welding set, bender",
+      "output": "Frame assemblies",
+      "quality": "IPQC"
+    },
+    {
+      "id": "finishing",
+      "name": "Surface Finishing",
+      "x": 150,
+      "y": 100,
+      "w": 110,
+      "h": 60,
+      "workers": 2,
+      "equipment": "Sander, spray booth",
+      "output": "Finished surfaces",
+      "quality": "IPQC"
+    },
+    {
+      "id": "subassembly",
+      "name": "Sub-Assembly",
+      "x": 280,
+      "y": 100,
+      "w": 110,
+      "h": 60,
+      "workers": 2,
+      "equipment": "Hand & power tools",
+      "output": "Sub-assemblies",
+      "quality": "IPQC"
+    },
+    {
+      "id": "finalassembly",
+      "name": "Final Assembly",
+      "x": 410,
+      "y": 100,
+      "w": 120,
+      "h": 60,
+      "workers": 2,
+      "equipment": "Hand & power tools",
+      "output": "Complete units",
+      "quality": "IPQC"
+    },
+    {
+      "id": "qc",
+      "name": "Quality Control",
+      "x": 150,
+      "y": 180,
+      "w": 110,
+      "h": 55,
+      "workers": 1,
+      "equipment": "Test jig, checklist",
+      "output": "Approved units",
+      "quality": "FQC"
+    },
+    {
+      "id": "packaging",
+      "name": "Packaging",
+      "x": 280,
+      "y": 180,
+      "w": 110,
+      "h": 55,
+      "workers": 2,
+      "equipment": "Packing table",
+      "output": "Packed units",
+      "quality": "FQC"
+    },
+    {
+      "id": "fgstore",
+      "name": "Finished Goods",
+      "x": 410,
+      "y": 180,
+      "w": 120,
+      "h": 55,
+      "workers": 1,
+      "equipment": "Racking",
+      "output": "Ready-to-ship stock",
+      "quality": "—"
+    },
+    {
+      "id": "dispatch",
+      "name": "Dispatch",
+      "x": 560,
+      "y": 100,
+      "w": 100,
+      "h": 60,
+      "workers": 0,
+      "equipment": "Loading dock",
+      "output": "Shipped units",
+      "quality": "—"
+    }
+  ]
+};
